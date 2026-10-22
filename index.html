@@ -410,7 +410,34 @@
     .profile-grid { grid-template-columns: 0.9fr 1.1fr; }
     .premium-grid { grid-template-columns: 1.15fr 0.85fr; }
     .info-grid { grid-template-columns: 1.2fr 0.8fr; }
-    .projects-grid,
+    
+    /* NEUE PROJEKT-GRID SYSTEMATIK */
+    .projects-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .project-featured-card {
+      width: 100%;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+    .project-featured-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .projects-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3-Spalten Layout für Standardprojekte */
+    }
+    
     .expertise-grid,
     .pub-grid,
     .highlights-grid {
@@ -418,7 +445,6 @@
       gap: 20px;
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-    .projects-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .card h3 {
       margin: 0;
       font-size: 22px;
@@ -445,13 +471,22 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
+    .project-image-wrapper {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      box-shadow: var(--shadow-soft);
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .project-image {
       width: 100%;
-      height: 160px;
-      object-fit: cover;
-      border-radius: 16px;
-      margin-top: 14px;
-      border: 1px solid var(--border);
+      height: auto;
+      max-height: 380px;
+      object-fit: contain;
+      display: block;
     }
     .tag-list {
       display: flex;
@@ -600,7 +635,7 @@
         transition: none !important;
       }
     }
-    @media (max-width: 1160px) {
+    @media (max-width: 1200px) {
       .projects-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 1024px) {
@@ -610,7 +645,10 @@
       .premium-grid {
         grid-template-columns: 1fr;
       }
-      .projects-grid,
+      .project-featured-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
       .expertise-grid,
       .pub-grid,
       .highlights-grid { grid-template-columns: 1fr; }
@@ -621,9 +659,13 @@
       .topbar-inner { align-items: flex-start; }
       .brand-sub { max-width: 200px; }
     }
+    @media (max-width: 768px) {
+      .projects-grid { grid-template-columns: 1fr; }
+    }
     @media (max-width: 640px) {
       .container { width: min(1240px, calc(100% - 20px)); }
-      .panel, .card { border-radius: 22px; }
+      .panel, .card, .project-featured-card { border-radius: 22px; }
+      .project-featured-card { padding: 20px; }
       .btn { padding: 11px 14px; }
       .hero-copy { font-size: 17px; }
       .stats-grid { grid-template-columns: 1fr 1fr; }
@@ -809,64 +851,78 @@
               </p>
             </div>
           </div>
-          <div class="projects-grid">
-            <article class="card card-premium" style="grid-column: span 1;">
-              <div class="feature-pill">Featured / Automation</div>
-              <h3>AI-Driven Job Matcher</h3>
-              <div class="project-subtitle">End-to-End Orchestrator & Analysis Pipeline</div>
-              <p>AI-Driven Job Matcher is an asynchronous Python pipeline that extracts applicant data from local PDFs and matches it against fresh listings scraped from multiple job boards using a LangChain-powered LLM. It calculates precise commute times, filters duplicates with a local JSON history, and delivers highly personalized, visually structured HTML match reports directly to your inbox.</p>
-              <img src="image_1792663943783942.png" alt="AI Job Matcher Pipeline Illustration" class="project-image" />
-              <div class="tag-list">
-                <span class="tag">Python</span>
-                <span class="tag">LangChain</span>
-                <span class="tag">Groq API</span>
-                <span class="tag">Apify</span>
-                <span class="tag">SMTP (HTML Mail)</span>
-                <span class="tag">Asynchronous Python</span>
+          
+          <div class="projects-container">
+            <!-- 1. FULL WIDTH FEATURED PROJECT WITH DETAILED SCHEMA IMAGE -->
+            <article class="project-featured-card card-premium">
+              <div class="project-featured-grid">
+                <div>
+                  <div class="feature-pill" style="margin-bottom: 12px;">Featured / Automation</div>
+                  <h3 style="font-size: 28px; line-height: 1.2; margin: 0 0 4px 0;">AI-Driven Job Matcher</h3>
+                  <div class="project-subtitle" style="margin-top: 0; margin-bottom: 16px;">End-to-End Orchestrator &amp; Analysis Pipeline</div>
+                  <p style="margin: 0; line-height: 1.8; font-size: 16px;">
+                    AI-Driven Job Matcher is an asynchronous Python pipeline that extracts applicant data from local PDFs and matches it against fresh listings scraped from multiple job boards using a LangChain-powered LLM. It calculates precise commute times, filters duplicates with a local JSON history, and delivers highly personalized, visually structured HTML match reports directly to your inbox.
+                  </p>
+                  <div class="tag-list" style="margin-top: 24px;">
+                    <span class="tag">Python</span>
+                    <span class="tag">LangChain</span>
+                    <span class="tag">Groq API</span>
+                    <span class="tag">Apify</span>
+                    <span class="tag">SMTP (HTML Mail)</span>
+                    <span class="tag">Asynchronous Python</span>
+                  </div>
+                </div>
+                <div class="project-image-wrapper">
+                  <img src="image_1792663943783942.png" alt="AI Job Matcher Architecture Pipeline" class="project-image" />
+                </div>
               </div>
             </article>
-            <article class="card card-premium">
-              <div class="feature-pill">Featured</div>
-              <h3>Commodity Price Forecasting</h3>
-              <div class="project-subtitle">Kaggle Silver Medal · Rank 18/1711</div>
-              <p>Built accurate and stable deep learning models for raw material price forecasting, with strong emphasis on robustness, validation discipline, and error stability under changing market conditions.</p>
-              <div class="tag-list"><span class="tag">Deep Learning</span><span class="tag">Time Series</span><span class="tag">Forecasting</span><span class="tag">Kaggle</span></div>
-            </article>
-            <article class="card card-premium">
-              <div class="feature-pill">Industrial AI</div>
-              <h3>Production Line OEE Prediction</h3>
-              <div class="project-subtitle">Bosch AI Competition</div>
-              <p>Developed AI models to predict overall equipment effectiveness and make production losses more explainable by identifying patterns associated with bottlenecks and performance degradation.</p>
-              <div class="tag-list"><span class="tag">Industrial AI</span><span class="tag">OEE</span><span class="tag">Tabular ML</span><span class="tag">Root Cause Analysis</span></div>
-            </article>
-            <article class="card card-premium">
-              <div class="feature-pill">Automotive</div>
-              <h3>Brake Pedal Pressure Estimation</h3>
-              <div class="project-subtitle">Sensor Cost Reduction via Neural Networks</div>
-              <p>Designed a sequential neural network to estimate pedal pressure trajectories during braking events, reducing dependency on dedicated hardware sensors.</p>
-              <div class="tag-list"><span class="tag">Sequential Models</span><span class="tag">Signal Modeling</span><span class="tag">Automotive</span><span class="tag">Cost Optimization</span></div>
-            </article>
-            <article class="card card-premium">
-              <div class="feature-pill">Healthcare AI</div>
-              <h3>Intracranial Aneurysm Localization</h3>
-              <div class="project-subtitle">Medical Imaging Deep Learning</div>
-              <p>Worked on multimodal imaging-based localization of intracranial aneurysms using deep learning to support earlier and more reliable diagnosis.</p>
-              <div class="tag-list"><span class="tag">Medical Imaging</span><span class="tag">Deep Learning</span><span class="tag">Localization</span><span class="tag">Healthcare AI</span></div>
-            </article>
-            <article class="card card-premium">
-              <div class="feature-pill">Materials AI</div>
-              <h3>Polymer Property Prediction</h3>
-              <div class="project-subtitle">Machine Learning for Sustainable Materials</div>
-              <p>Applied machine learning to predict polymer properties and accelerate materials research workflows focused on performance and sustainability.</p>
-              <div class="tag-list"><span class="tag">Materials AI</span><span class="tag">Regression</span><span class="tag">Sustainability</span><span class="tag">Feature Engineering</span></div>
-            </article>
-            <article class="card card-premium">
-              <div class="feature-pill">Wearables</div>
-              <h3>Wearable Behavior Prediction</h3>
-              <div class="project-subtitle">Deep Learning on Wrist-Worn Sensor Data</div>
-              <p>Predicted body-focused repetitive behaviors from wearable sensor signals to support data-driven approaches for behavioral disorder treatment and monitoring.</p>
-              <div class="tag-list"><span class="tag">Wearables</span><span class="tag">Time Series</span><span class="tag">Deep Learning</span><span class="tag">Health Tech</span></div>
-            </article>
+
+            <!-- 2. REIN TEXTUELLE PROJEKTE IM 3-SPALTEN-GRID -->
+            <div class="projects-grid">
+              <article class="card card-premium">
+                <div class="feature-pill">Featured</div>
+                <h3>Commodity Price Forecasting</h3>
+                <div class="project-subtitle">Kaggle Silver Medal · Rank 18/1711</div>
+                <p>Built accurate and stable deep learning models for raw material price forecasting, with strong emphasis on robustness, validation discipline, and error stability under changing market conditions.</p>
+                <div class="tag-list"><span class="tag">Deep Learning</span><span class="tag">Time Series</span><span class="tag">Forecasting</span><span class="tag">Kaggle</span></div>
+              </article>
+              <article class="card card-premium">
+                <div class="feature-pill">Industrial AI</div>
+                <h3>Production Line OEE Prediction</h3>
+                <div class="project-subtitle">Bosch AI Competition</div>
+                <p>Developed AI models to predict overall equipment effectiveness and make production losses more explainable by identifying patterns associated with bottlenecks and performance degradation.</p>
+                <div class="tag-list"><span class="tag">Industrial AI</span><span class="tag">OEE</span><span class="tag">Tabular ML</span><span class="tag">Root Cause Analysis</span></div>
+              </article>
+              <article class="card card-premium">
+                <div class="feature-pill">Automotive</div>
+                <h3>Brake Pedal Pressure Estimation</h3>
+                <div class="project-subtitle">Sensor Cost Reduction via Neural Networks</div>
+                <p>Designed a sequential neural network to estimate pedal pressure trajectories during braking events, reducing dependency on dedicated hardware sensors.</p>
+                <div class="tag-list"><span class="tag">Sequential Models</span><span class="tag">Signal Modeling</span><span class="tag">Automotive</span><span class="tag">Cost Optimization</span></div>
+              </article>
+              <article class="card card-premium">
+                <div class="feature-pill">Healthcare AI</div>
+                <h3>Intracranial Aneurysm Localization</h3>
+                <div class="project-subtitle">Medical Imaging Deep Learning</div>
+                <p>Worked on multimodal imaging-based localization of intracranial aneurysms using deep learning to support earlier and more reliable diagnosis.</p>
+                <div class="tag-list"><span class="tag">Medical Imaging</span><span class="tag">Deep Learning</span><span class="tag">Localization</span><span class="tag">Healthcare AI</span></div>
+              </article>
+              <article class="card card-premium">
+                <div class="feature-pill">Materials AI</div>
+                <h3>Polymer Property Prediction</h3>
+                <div class="project-subtitle">Machine Learning for Sustainable Materials</div>
+                <p>Applied machine learning to predict polymer properties and accelerate materials research workflows focused on performance and sustainability.</p>
+                <div class="tag-list"><span class="tag">Materials AI</span><span class="tag">Regression</span><span class="tag">Sustainability</span><span class="tag">Feature Engineering</span></div>
+              </article>
+              <article class="card card-premium">
+                <div class="feature-pill">Wearables</div>
+                <h3>Wearable Behavior Prediction</h3>
+                <div class="project-subtitle">Deep Learning on Wrist-Worn Sensor Data</div>
+                <p>Predicted body-focused repetitive behaviors from wearable sensor signals to support data-driven approaches for behavioral disorder treatment and monitoring.</p>
+                <div class="tag-list"><span class="tag">Wearables</span><span class="tag">Time Series</span><span class="tag">Deep Learning</span><span class="tag">Health Tech</span></div>
+              </article>
+            </div>
           </div>
         </div>
       </section>
@@ -1043,6 +1099,7 @@
       addTargets('.premium-grid > *', 'reveal');
       addTargets('.info-grid > *', 'reveal');
       addTargets('.expertise-grid > *', 'reveal');
+      addTargets('.project-featured-card', 'reveal');
       addTargets('.projects-grid > *', 'reveal');
       addTargets('.timeline-item', 'reveal');
       addTargets('.highlights-grid > *', 'reveal');
